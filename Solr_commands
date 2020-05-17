@@ -1,6 +1,27 @@
 Apache Solr installation and start
 
-cd C:\Users\HP\Workspace\solr-8.5.1
+cd C:\Users\..\Workspace\solr-8.5.1
+
+http://localhost:8983/solr
+---------------------------------------------------------------------------------------------------------------------------------------
+Solr Standalone
+bin\solr start
+
+bin\solr start -p 8983
+
+bin\solr stop -p 8983
+
+bin\solr status
+
+Create a Core
+bin\solr create -c gettingstarted
+
+Deleting a Core
+bin\solr delete -c gettingstarted
+
+-----------------------------------------------------------------------------------------------------------------------------------------------
+SolrCloud
+bin\solr -e cloud
 
 Restarting Nodes
 You can restart your SolrCloud nodes using the bin/solr script. For instance, to restart node1 running on port 8983 (with an embedded ZooKeeper server), you would do:
@@ -9,23 +30,8 @@ bin\solr restart -c -p 8983 -s example/cloud/node1/solr
 To restart node2 running on port 7574, you can do:
 bin\solr restart -c -p 7574 -z localhost:9983 -s example/cloud/node2/solr
 
-http://localhost:8983/solr
-
 bin\solr stop -all
-
----------------------------------------------------------------------------------------------------------------------------------------
-Solr Standalone
-bin\solr start
-
-bin\solr start -p 8984
-
-bin\solr stop -p 8983
-
-bin\solr status
-
-SolrCloud
-bin\solr -e cloud
-
+-----------------------------------------------------------------------------------------------------------------------------------------------
 Query:
 
 -- working query with dereferenced variable
@@ -38,7 +44,6 @@ Deleting doc:
 JSON:
 
 {'delete': {'query': '*:*'}}
-
 
 ------------------------------------------------------------------------------------------------------------------------------------
 # Working query with pysolr library
