@@ -11,6 +11,8 @@ bin\solr start -p 8983
 
 bin\solr stop -p 8983
 
+bin\solr restart -p 8983
+
 bin\solr status
 
 Create a Core
