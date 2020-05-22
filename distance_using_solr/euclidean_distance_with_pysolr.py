@@ -80,7 +80,20 @@ v124_f,v125_f,v126_f,v127_f,{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{
 {},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},\
 {},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},\
 {},{},{},{},{},{},{},{},{},{},{},{},{},{})&fl=image_link,euclidean_distance:$euclidean_distance&sort=$euclidean_distance%20\
-asc&rows=5'.format(str(y[0]), str(y[1]), str(y[2]), str(y[3]), str(y[4]), str(y[5]), str(y[6]), str(y[7]), str(y[8]), str(y[9]), str(y[10]), str(y[11]), str(y[12]), str(y[13]), str(y[14]), str(y[15]), str(y[16]), str(y[17]), str(y[18]), str(y[19]), str(y[20]), str(y[21]), str(y[22]), str(y[23]), str(y[24]), str(y[25]), str(y[26]), str(y[27]), str(y[28]), str(y[29]), str(y[30]), str(y[31]), str(y[32]), str(y[33]), str(y[34]), str(y[35]), str(y[36]), str(y[37]), str(y[38]), str(y[39]), str(y[40]), str(y[41]), str(y[42]), str(y[43]), str(y[44]), str(y[45]), str(y[46]), str(y[47]), str(y[48]), str(y[49]), str(y[50]), str(y[51]), str(y[52]), str(y[53]), str(y[54]), str(y[55]), str(y[56]), str(y[57]), str(y[58]), str(y[59]), str(y[60]), str(y[61]), str(y[62]), str(y[63]), str(y[64]), str(y[65]), str(y[66]), str(y[67]), str(y[68]), str(y[69]), str(y[70]), str(y[71]), str(y[72]), str(y[73]), str(y[74]), str(y[75]), str(y[76]), str(y[77]), str(y[78]), str(y[79]), str(y[80]), str(y[81]), str(y[82]), str(y[83]), str(y[84]), str(y[85]), str(y[86]), str(y[87]), str(y[88]), str(y[89]), str(y[90]), str(y[91]), str(y[92]), str(y[93]), str(y[94]), str(y[95]), str(y[96]), str(y[97]), str(y[98]), str(y[99]), str(y[100]), str(y[101]), str(y[102]), str(y[103]), str(y[104]), str(y[105]), str(y[106]), str(y[107]), str(y[108]), str(y[109]), str(y[110]), str(y[111]), str(y[112]), str(y[113]), str(y[114]), str(y[115]), str(y[116]), str(y[117]), str(y[118]), str(y[119]), str(y[120]), str(y[121]), str(y[122]), str(y[123]), str(y[124]), str(y[125]), str(y[126]), str(y[127]))
+asc&rows=5'.format(str(y[0]), str(y[1]), str(y[2]), str(y[3]), str(y[4]), str(y[5]), str(y[6]), str(y[7]), str(y[8]), str(y[9]), 
+str(y[10]), str(y[11]), str(y[12]), str(y[13]), str(y[14]), str(y[15]), str(y[16]), str(y[17]), str(y[18]), str(y[19]), 
+str(y[20]), str(y[21]), str(y[22]), str(y[23]), str(y[24]), str(y[25]), str(y[26]), str(y[27]), str(y[28]), str(y[29]), 
+str(y[30]), str(y[31]), str(y[32]), str(y[33]), str(y[34]), str(y[35]), str(y[36]), str(y[37]), str(y[38]), str(y[39]), 
+str(y[40]), str(y[41]), str(y[42]), str(y[43]), str(y[44]), str(y[45]), str(y[46]), str(y[47]), str(y[48]), str(y[49]),
+ str(y[50]), str(y[51]), str(y[52]), str(y[53]), str(y[54]), str(y[55]), str(y[56]), str(y[57]), str(y[58]), str(y[59]), 
+ str(y[60]), str(y[61]), str(y[62]), str(y[63]), str(y[64]), str(y[65]), str(y[66]), str(y[67]), str(y[68]), str(y[69]), 
+ str(y[70]), str(y[71]), str(y[72]), str(y[73]), str(y[74]), str(y[75]), str(y[76]), str(y[77]), str(y[78]), str(y[79]), 
+ str(y[80]), str(y[81]), str(y[82]), str(y[83]), str(y[84]), str(y[85]), str(y[86]), str(y[87]), str(y[88]), str(y[89]), 
+ str(y[90]), str(y[91]), str(y[92]), str(y[93]), str(y[94]), str(y[95]), str(y[96]), str(y[97]), str(y[98]), str(y[99]), 
+ str(y[100]), str(y[101]), str(y[102]), str(y[103]), str(y[104]), str(y[105]), str(y[106]), str(y[107]), str(y[108]), 
+ str(y[109]), str(y[110]), str(y[111]), str(y[112]), str(y[113]), str(y[114]), str(y[115]), str(y[116]), str(y[117]), 
+ str(y[118]), str(y[119]), str(y[120]), str(y[121]), str(y[122]), str(y[123]), str(y[124]), str(y[125]), str(y[126]), 
+ str(y[127]))
 
     print('URL :\n', url)
 
