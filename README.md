@@ -76,9 +76,41 @@ To load documents in Solr:
 To load test query performance 
   python pysolr_query_load_testing_performance_using_multiprocessing.py
   
+Getting started with PostgreSQL:
+
+  Download Docker:
+  https://www.docker.com/products/docker-desktop
   
+  Docker commands (Application specific commands):
   
+    Running container:
+    docker run -i -d --name=postgres -p 5432:5432 -e POSTGRES_PASSWORD=Narrator@027 -e PGDATA=/pgdata -v /pgdata:/pgdata expert/postgresql-large-cube:11.2-alpine
+    
+    Check if container is created:
+    docker container ls -a
+    
+    Connect to Postgres in Docker container:
+    docker exec -it postgres psql -h localhost -p 5432 -U postgres
+    
+    Remove container:
+    docker rm -f postgres
+
+  Postgres commands:
   
+    To check if Postgres running fine in container:
+    select version();
+    
+    Create Database:
+    create database euclidean;
+    
+    Add current user to database:
+    \c euclidean
+  
+    Drop database:
+    drop database if exists euclidean;
+  
+    To exit PostgreSQL:
+    \q
   
   
   
