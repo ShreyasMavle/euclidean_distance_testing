@@ -33,9 +33,10 @@ sort=$euclidean_distance%20asc&rows=5'.format(y[0], y[1], y[2], y[3], y[4])
 def load_testing():
     with concurrent.futures.ThreadPoolExecutor() as executor:
         avg_time = list()
+        threads = int(input('Enter number of threads to spawn : '))
         start = time.perf_counter()
         results = [executor.submit(
-            connect, i, sample_floats(-2.00, 2.00, k=5)) for i in range(101)]
+            connect, i, sample_floats(-2.00, 2.00, k=5)) for i in range(threads + 1)]
         for f in concurrent.futures.as_completed(results):
             avg_time.append(f.result())
         finish = time.perf_counter()

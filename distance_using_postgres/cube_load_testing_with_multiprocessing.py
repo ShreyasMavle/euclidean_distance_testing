@@ -33,11 +33,13 @@ def load_testing():
                                 user=Credentials.user, password=Credentials.password)
         # create a cursor
         cur = conn.cursor()
+        processes = int(input('Enter number of processes to spawn : '))
+
         with concurrent.futures.ProcessPoolExecutor() as executor:
             avg_time = list()
             start = time.perf_counter()
             results = [executor.submit(
-                connect, i, sample_floats(-2.00, 2.00, k=128), cur) for i in range(101)]
+                connect, i, sample_floats(-2.00, 2.00, k=128), cur) for i in range(processes + 1)]
 
             for f in concurrent.futures.as_completed(results):
                 avg_time.append(f.result())
