@@ -11,7 +11,12 @@ import psycopg2
 from database_credentials import Credentials
 
 
-def connect(i, y, cur):
+def connect(i):
+
+    y = sample_floats(-2.00, 2.00, k=128)
+    conn = psycopg2.connect(database=Credentials.database, user=Credentials.user, password=Credentials.password)
+    # create a cursor
+    cur = conn.cursor()
 
     print(f'--------------------- Started process {i} --------------------- ')
     query = "SELECT image_link, sqrt(power(CUBE(array[{}]) <-> vector1, 2)) as distance FROM project_with_cube ORDER BY\
@@ -22,43 +27,38 @@ def connect(i, y, cur):
     result = cur.fetchall()
     t2 = time.perf_counter()
 
-    print('Completed process {}. Fetched {} results from query !'.format(i, len(result)))
+    print('Completed process {}. Fetched {} results from query in {} seconds!'.format(i, len(result), (t2-t1)))
+
+    if conn is not None:
+        cur.close()
+        conn.close()
     return t2-t1
 
 
 def load_testing():
     try:
-        print('\nConnecting to the PostgreSQL database...\n')
-        conn = psycopg2.connect(database=Credentials.database,
-                                user=Credentials.user, password=Credentials.password)
-        # create a cursor
-        cur = conn.cursor()
         processes = int(input('Enter number of processes to spawn : '))
 
         with concurrent.futures.ProcessPoolExecutor() as executor:
             avg_time = list()
             start = time.perf_counter()
-            results = [executor.submit(
-                connect, i, sample_floats(-2.00, 2.00, k=128), cur) for i in range(processes + 1)]
+            results = [executor.submit(connect, i) for i in range(processes + 1)]
 
             for f in concurrent.futures.as_completed(results):
                 avg_time.append(f.result())
+                
             finish = time.perf_counter()
             print(
                 f'Average time for each request = {round(sum(avg_time) / len(avg_time), 2)} second(s)')
             print(
                 f'Finished in {round(finish-start, 2)} second(s) using Multiprocessing')
             
-        cur.close()
 
     except (Exception, psycopg2.DatabaseError) as error:
         print(error)
     except KeyboardInterrupt :
         print('\nExecution interrupted by user !!')
-    finally:
-        if conn is not None:
-            conn.close()
-            print('Database connection closed.')
+    
 
 
 def sample_floats(low, high, k=1):
