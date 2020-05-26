@@ -17,17 +17,17 @@ def connect():
     try:
         # connect to the PostgreSQL server
         print('\nConnecting to the PostgreSQL database...\n')
-        conn = psycopg2.connect(database = Credentials.database, user = Credentials.user, password = Credentials.password)
+        conn = psycopg2.connect(database = Credentials.database, user = Credentials.user, password = Credentials.password, host = '127.0.0.1')
         # create a cursor
         cur = conn.cursor()
         cur.execute('''
         CREATE EXTENSION IF NOT EXISTS CUBE;
-        DROP TABLE IF EXISTS PROJECT_WITH_CUBE;
-        CREATE TABLE IF NOT EXISTS PROJECT_WITH_CUBE 
-        (ID SERIAL, 
-        PROJECT_ID INTEGER, 
-        IMAGE_LINK INTEGER, 
-        VECTOR1 CUBE);
+        CREATE TABLE IF NOT EXISTS PROJECT_WITH_CUBE(
+            ID SERIAL, 
+            PROJECT_ID INTEGER, 
+            IMAGE_LINK INTEGER, 
+            VECTOR1 CUBE
+        );
         CREATE INDEX IF NOT EXISTS VECTORS_VEC_IDX ON PROJECT_WITH_CUBE (VECTOR1);
         ''')
         conn.commit()
@@ -46,7 +46,7 @@ def connect():
         dist_programatically = list()
         sorted_list = list()
 
-        cur.execute('''select count(*) from project_with_seperate_columns''')
+        cur.execute('''select count(*) from PROJECT_WITH_CUBE''')
         result = cur.fetchone()
         print(f'{result[0]} record(s) are present in table')
 
@@ -55,7 +55,7 @@ def connect():
             records = 0
 
         # To update on previously added records
-        cur.execute('''select max(id) from project_with_seperate_columns''')
+        cur.execute('''select max(id) from PROJECT_WITH_CUBE''')
         max_id = cur.fetchone()[0]
         restart = ''
         start = 1
@@ -65,7 +65,7 @@ def connect():
                 start = max_id + 1
                 records += max_id  
             else: 
-                cur.execute('''DELETE FROM project_with_seperate_columns''')
+                cur.execute('''DELETE FROM PROJECT_WITH_CUBE''')
                 conn.commit()
                 print('Deleted previous records from table')
 
@@ -88,7 +88,7 @@ def connect():
 
         cur.execute('''select count(*) from project_with_cube''')
         result = cur.fetchone()
-        print(f'{result[0]} records are present in database')
+        print(f'\n{result[0]} record(s) are present in database')
 
         
         query = "SELECT image_link, sqrt(power(CUBE(array[{}]) <-> vector1, 2)) as distance FROM project_with_cube ORDER BY\
