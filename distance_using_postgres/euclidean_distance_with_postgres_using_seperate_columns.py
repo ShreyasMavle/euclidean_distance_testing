@@ -7,6 +7,7 @@ import time
 import psycopg2
 from scipy.spatial import distance
 
+
 # Internal imports
 from database_credentials import Credentials
 
@@ -196,7 +197,7 @@ def connect():
             x[118], x[119], x[120], x[121], x[122], x[123], x[124], x[125], x[126], 
             x[127]))
 
-            print('Inserted {} records !!'.format(i))
+
             dist = distance.euclidean(x, y)
             dist_programatically.append(round(dist,2))
         
@@ -365,8 +366,12 @@ def connect():
         print('Result from database = ')
         [print('Image: {}, Distance : {}'.format(res[0],res[1])) for res in result]
 
-        # cur.execute('''DELETE FROM project_with_seperate_columns''')
-        # conn.commit()
+        delete = input('Delete records inserted in table? (Y/N) ')
+        
+        if delete == 'Y':
+            cur.execute('''DELETE FROM project_with_seperate_columns''')
+            conn.commit()
+            print('Deleted records from table')
 
 	    # close the communication with the PostgreSQL
         cur.close()
