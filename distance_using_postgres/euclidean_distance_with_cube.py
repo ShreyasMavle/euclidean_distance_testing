@@ -6,6 +6,7 @@ import time
 # Third party library
 import psycopg2
 from scipy.spatial import distance
+from tqdm import tqdm
 
 # Internal imports
 from database_credentials import Credentials
@@ -45,9 +46,30 @@ def connect():
         dist_programatically = list()
         sorted_list = list()
 
-        records = int(input('Enter the number of records to insert : '))
+        cur.execute('''select count(*) from project_with_seperate_columns''')
+        result = cur.fetchone()
+        print(f'{result[0]} record(s) are present in table')
 
-        for i in range(1, records + 1):
+        records = int(input('Enter the number of records to insert : '))
+        if records is None:
+            records = 0
+
+        # To update on previously added records
+        cur.execute('''select max(id) from project_with_seperate_columns''')
+        max_id = cur.fetchone()[0]
+        restart = ''
+        start = 1
+        if max_id is not None:
+            restart = input('Resume insertion on previously inserted records? (y/n) ')
+            if restart == 'y':
+                start = max_id + 1
+                records += max_id  
+            else: 
+                cur.execute('''DELETE FROM project_with_seperate_columns''')
+                conn.commit()
+                print('Deleted previous records from table')
+
+        for i in tqdm(range(start, records + 1)):
             x = sample_floats(-2.00, 2.00, k = 128)
             # Insert script
 
@@ -56,7 +78,6 @@ def connect():
 
             cur.execute(query)
 
-            print('Inserted {} records !!'.format(i))
             dist = distance.euclidean(x, y)
             dist_programatically.append(round(dist,2))
 

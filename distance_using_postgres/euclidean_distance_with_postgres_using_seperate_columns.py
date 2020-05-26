@@ -6,7 +6,7 @@ import time
 # Third party library
 import psycopg2
 from scipy.spatial import distance
-
+from tqdm import tqdm
 
 # Internal imports
 from database_credentials import Credentials
@@ -20,6 +20,7 @@ def connect():
         conn = psycopg2.connect(database = Credentials.database, user = Credentials.user, password = Credentials.password)
         # create a cursor
         cur = conn.cursor()
+
         
         cur.execute('''
         CREATE TABLE IF NOT EXISTS project_with_seperate_columns (
@@ -172,9 +173,30 @@ def connect():
         dist_programatically = list()
         sorted_list = list()
 
-        records = int(input('Enter the number of records to insert : '))
+        cur.execute('''select count(*) from project_with_seperate_columns''')
+        result = cur.fetchone()
+        print(f'{result[0]} record(s) are present in table')
 
-        for i in range(1, records + 1):
+        records = int(input('Enter the number of records to insert : '))
+        if records is None:
+            records = 0
+
+        # To update on previously added records
+        cur.execute('''select max(id) from project_with_seperate_columns''')
+        max_id = cur.fetchone()[0]
+        restart = ''
+        start = 1
+        if max_id is not None:
+            restart = input('Resume insertion on previously inserted records? (y/n) ')
+            if restart == 'y':
+                start = max_id + 1
+                records += max_id  
+            else: 
+                cur.execute('''DELETE FROM project_with_seperate_columns''')
+                conn.commit()
+                print('Deleted previous records from table')
+
+        for i in tqdm(range(start, records + 1)):
             x = sample_floats(-2.00, 2.00, k = 128)
             # Insert script
             cur.execute("INSERT INTO project_with_seperate_columns VALUES (%s,%s,%s,\
@@ -208,7 +230,7 @@ def connect():
            
         cur.execute('''select count(*) from project_with_seperate_columns''')
         result = cur.fetchone()
-        print(f'{result[0]} records are present in database')
+        print(f'\n{result[0]} record(s) are present in table')
 
         t1 = time.perf_counter()
         cur.execute('''
@@ -366,12 +388,7 @@ def connect():
         print('Result from database = ')
         [print('Image: {}, Distance : {}'.format(res[0],res[1])) for res in result]
 
-        delete = input('Delete records inserted in table? (Y/N) ')
         
-        if delete == 'Y':
-            cur.execute('''DELETE FROM project_with_seperate_columns''')
-            conn.commit()
-            print('Deleted records from table')
 
 	    # close the communication with the PostgreSQL
         cur.close()
