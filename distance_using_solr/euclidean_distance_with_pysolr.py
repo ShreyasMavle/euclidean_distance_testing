@@ -9,7 +9,7 @@ import time
 def connect():
     # Setup a Solr instance. The timeout is optional.
     solr = pysolr.Solr(
-        'http://localhost:8983/solr/gettingstarted/', always_commit=False)
+        'http://127.0.0.1:8983/solr/gettingstarted/', always_commit=False)
 
     solr.ping()
     solr.delete(q='*:*')
@@ -29,7 +29,7 @@ def connect():
 
     print('Inserting records')
 
-    for i in range(1, 1000001):
+    for i in tqdm(range(1, 1000001)):
         x = sample_floats(-2.00, 2.00, k=128)
         doc = {"id": i, "project_id": 1, "image_link": i, "v0_f": x[0], "v1_f": x[1], "v2_f": x[2], "v3_f": x[3], "v4_f": x[4], "v5_f": x[5],
                "v6_f": x[6], "v7_f": x[7], "v8_f": x[8], "v9_f": x[9], "v10_f": x[10], "v11_f": x[11], "v12_f": x[12], "v13_f": x[13], "v14_f": x[14],
@@ -49,7 +49,6 @@ def connect():
                "v117_f": x[117], "v118_f": x[118], "v119_f": x[119], "v120_f": x[120], "v121_f": x[121], "v122_f": x[122], "v123_f": x[123],
                "v124_f": x[124], "v125_f": x[125], "v126_f": x[126], "v127_f": x[127]}
         doc_list.append(doc)
-        print('Appended {} documents !!'.format(i))
 
         if len(doc_list) % 1000 == 0:
             print('Committing documents !!')

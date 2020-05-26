@@ -6,6 +6,7 @@ import random
 
 # Third party library
 import psycopg2
+from tqdm import tqdm
 
 # Internal imports
 from database_credentials import Credentials
@@ -14,7 +15,7 @@ from database_credentials import Credentials
 def connect(i):
 
     y = sample_floats(-2.00, 2.00, k=128)
-    conn = psycopg2.connect(database=Credentials.database, user=Credentials.user, password=Credentials.password)
+    conn = psycopg2.connect(database=Credentials.database, user=Credentials.user, password=Credentials.password, host = '127.0.0.1')
     # create a cursor
     cur = conn.cursor()
 
@@ -42,7 +43,7 @@ def load_testing():
         with concurrent.futures.ProcessPoolExecutor() as executor:
             avg_time = list()
             start = time.perf_counter()
-            results = [executor.submit(connect, i) for i in range(processes + 1)]
+            results = [executor.submit(connect, i) for i in range(1, processes + 1)]
 
             for f in concurrent.futures.as_completed(results):
                 avg_time.append(f.result())

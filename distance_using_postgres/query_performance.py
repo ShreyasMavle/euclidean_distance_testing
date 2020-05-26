@@ -8,17 +8,15 @@ import psycopg2
 # Internal imports
 from database_credentials import Credentials
 
-
 def load_testing():
     try:
         print('\nConnecting to the PostgreSQL database...\n')
-        conn = psycopg2.connect(database=Credentials.database, user=Credentials.user, password=Credentials.password)
+        conn = psycopg2.connect(database=Credentials.database, user=Credentials.user, password=Credentials.password, host = '127.0.0.1')
 
         # create a cursor
         cur = conn.cursor()
         iterations = int(input('Enter number of times to run query : '))
 
-    
         avg_time = list()
 
         for i in range(iterations + 1):
