@@ -8,27 +8,28 @@ import random
 import psycopg2
 from tqdm import tqdm
 
-# Internal imports
-from database_credentials import Credentials
-
-
 def connect(i):
 
     y = sample_floats(-2.00, 2.00, k=128)
-    conn = psycopg2.connect(database=Credentials.database, user=Credentials.user, password=Credentials.password, host = '127.0.0.1')
+    conn = psycopg2.connect(database="euclidean", user="postgres",
+                            password="Narrator@027", host='127.0.0.1')
     # create a cursor
     cur = conn.cursor()
 
     print(f'--------------------- Started process {i} --------------------- ')
-    query = "SELECT image_link, sqrt(power(CUBE(array[{}]) <-> vector1, 2)) as distance FROM project_with_cube ORDER BY\
-             distance ASC LIMIT 5".format(','.join(str(element) for element in y))
+    query = '''
+        SELECT  image_link, sqrt(power(CUBE(array[{}]) <-> vector1, 2)) as distance
+        FROM    project_with_cube
+        WHERE   PROJECT_ID = 1
+        ORDER BY distance ASC LIMIT 5'''.format(','.join(str(element) for element in y))
 
     t1 = time.perf_counter()
     cur.execute(query)
     result = cur.fetchall()
     t2 = time.perf_counter()
 
-    print('Completed process {}. Fetched {} results from query in {} seconds!'.format(i, len(result), (t2-t1)))
+    print('Completed process {}. Fetched {} results from query in {} seconds!'.format(
+        i, len(result), (t2-t1)))
 
     if conn is not None:
         cur.close()
@@ -43,23 +44,22 @@ def load_testing():
         with concurrent.futures.ProcessPoolExecutor() as executor:
             avg_time = list()
             start = time.perf_counter()
-            results = [executor.submit(connect, i) for i in range(1, processes + 1)]
+            results = [executor.submit(connect, i)
+                       for i in range(1, processes + 1)]
 
             for f in concurrent.futures.as_completed(results):
                 avg_time.append(f.result())
-                
+
             finish = time.perf_counter()
             print(
                 f'Average time for each request = {round(sum(avg_time) / len(avg_time), 2)} second(s)')
             print(
                 f'Finished in {round(finish-start, 2)} second(s) using Multiprocessing')
-            
 
     except (Exception, psycopg2.DatabaseError) as error:
         print(error)
-    except KeyboardInterrupt :
+    except KeyboardInterrupt:
         print('\nExecution interrupted by user !!')
-    
 
 
 def sample_floats(low, high, k=1):

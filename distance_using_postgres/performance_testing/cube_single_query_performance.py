@@ -5,13 +5,11 @@ import random
 # Third party library
 import psycopg2
 
-# Internal imports
-from database_credentials import Credentials
-
 def load_testing():
     try:
         print('\nConnecting to the PostgreSQL database...\n')
-        conn = psycopg2.connect(database=Credentials.database, user=Credentials.user, password=Credentials.password, host = '127.0.0.1')
+        conn = psycopg2.connect(database="euclidean", user="postgres",
+                        password="Narrator@027", host='127.0.0.1')
 
         # create a cursor
         cur = conn.cursor()
@@ -22,8 +20,11 @@ def load_testing():
         for i in range(iterations + 1):
 
             y = sample_floats(-2.00, 2.00, k = 128)
-            query = "SELECT image_link, sqrt(power(CUBE(array[{}]) <-> vector1, 2)) as distance FROM project_with_cube ORDER BY\
-                distance ASC LIMIT 5".format(','.join(str(element) for element in y))
+            query = '''
+            SELECT  image_link, sqrt(power(CUBE(array[{}]) <-> vector1, 2)) as distance
+            FROM    project_with_cube
+            WHERE   PROJECT_ID = 1
+            ORDER BY distance ASC LIMIT 5'''.format(','.join(str(element) for element in y))
 
             t1 = time.perf_counter()
             cur.execute(query)

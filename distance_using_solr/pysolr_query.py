@@ -1,10 +1,13 @@
-import pysolr
+# Standard library
 from urllib.request import urlopen
 import random
-from scipy.spatial import distance
 import json
 import time
 
+# Third party library
+import pysolr
+from scipy.spatial import distance
+from tqdm import tqdm
 
 def connect():
     # Setup a Solr instance. The timeout is optional.

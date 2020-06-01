@@ -7,14 +7,11 @@ import random
 # Third party library
 import psycopg2
 
-# Internal imports
-from database_credentials import Credentials
-
-
 def connect(i):
 
     y = sample_floats(-2.00, 2.00, k=128)
-    conn = psycopg2.connect(database=Credentials.database, user=Credentials.user, password=Credentials.password)
+    conn = psycopg2.connect(database="euclidean", user="postgres",
+                            password="Narrator@027", host='127.0.0.1')
     # create a cursor
     cur = conn.cursor()
 
@@ -154,6 +151,8 @@ def connect(i):
             as distances
         FROM
             project_with_seperate_columns p
+        WHERE   
+            PROJECT_ID = 1 
         order by 
             distances asc
         limit 5''',(
