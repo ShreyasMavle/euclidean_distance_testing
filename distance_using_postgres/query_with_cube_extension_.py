@@ -36,7 +36,7 @@ def connect():
 
         x = y = list()
         
-        y = sample_floats(-2.00, 2.00, k = 128)
+        y = sample_floats(-2.00, 2.00, k = 100)
 
         dist_programatically = list()
         sorted_list = list()
@@ -45,7 +45,7 @@ def connect():
         result = cur.fetchone()
         print(f'{result[0]} record(s) are present in table')
 
-        records = int(input('Enter the number of records to insert : '))
+        records = int(input('\nEnter the number of records to insert : '))
         if records is None:
             records = 0
 
@@ -55,17 +55,17 @@ def connect():
         restart = ''
         start = 1
         if max_id is not None:
-            restart = input('Resume insertion on previously inserted records? (y/n) ')
+            restart = input('\nResume insertion on previously inserted records? (y/n) : ')
             if restart == 'y':
                 start = max_id + 1
                 records += max_id  
             else: 
                 cur.execute('''DELETE FROM PROJECT_WITH_CUBE''')
                 conn.commit()
-                print('Deleted previous records from table')
+                print('\nDeleted previous records from table\n')
 
         for i in tqdm(range(start, records + 1)):
-            x = sample_floats(-2.00, 2.00, k = 128)
+            x = sample_floats(-2.00, 2.00, k = 100)
             # Insert script
 
             query = "INSERT INTO project_with_cube (id, project_id, image_link, vector1) VALUES ({}, 1, {},\
@@ -73,10 +73,17 @@ def connect():
 
             cur.execute(query)
 
-            dist = distance.euclidean(x, y)
-            dist_programatically.append(round(dist,2))
-
             conn.commit()
+
+        query = 'select vector1 from project_with_cube'
+        cur.execute(query)
+        arrays  = cur.fetchall()
+
+        # Calculating programatically
+        for array in arrays:
+            x = list(map(float, (array[0])[1:-1].replace(' ', '').split(',')))
+            dist = distance.euclidean(x, y)
+            dist_programatically.append(round(dist, 2))
 
         dist_programatically = sorted(dist_programatically)
         sorted_list = dist_programatically[:5]
@@ -85,24 +92,22 @@ def connect():
         result = cur.fetchone()
         print(f'\n{result[0]} record(s) are present in database')
 
-        
         query = " \
         SELECT  image_link, sqrt(power(CUBE(array[{}]) <-> vector1, 2)) as distance \
         FROM    project_with_cube \
         WHERE   PROJECT_ID = 1 \
         ORDER BY distance ASC LIMIT 5".format(','.join(str(element) for element in y))
 
-
         t1 = time.perf_counter()
         cur.execute(query)
         result = cur.fetchall()    
         t2 = time.perf_counter()
 
-        print('Took {}s to calculate by query'.format((t2 - t1)))
+        print('\nTook {} seconds to calculate by query'.format(round(t2 - t1, 2)))
 
-        print('Result calculated programatically = \n',sorted_list)
+        print('\nResult calculated programatically = \n',sorted_list)
 
-        print('Result from database = ')
+        print('\nResult from database = ')
         [print('Image: {}, Distance : {}'.format(res[0],res[1])) for res in result]
 
         cur.close()
@@ -113,7 +118,7 @@ def connect():
     finally:
         if conn is not None:
             conn.close()
-            print('Database connection closed.')
+            print('\nDatabase connection closed.\n')
 
 
 def sample_floats(low, high, k=1):

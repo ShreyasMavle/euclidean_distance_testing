@@ -29,7 +29,7 @@ def connect(i):
     t2 = time.perf_counter()
 
     print('Completed process {}. Fetched {} results from query in {} seconds!'.format(
-        i, len(result), (t2-t1)))
+        i, len(result), round((t2-t1), 2)))
 
     if conn is not None:
         cur.close()
