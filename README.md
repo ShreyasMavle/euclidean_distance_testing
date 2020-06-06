@@ -71,10 +71,10 @@ Getting started with Solr standalone mode:
     bin\solr restart -p 8983
     
 To load documents in Solr:
-  python euclidean_distance_with_pysolr.py
+  python indexing_documents_with_pysolr.py
 
-To load test query performance 
-  python pysolr_query_load_testing_performance_using_multiprocessing.py
+To load-test query performance 
+  python multiprocessing_concurrent_futures.py
   
 Getting started with PostgreSQL:
 

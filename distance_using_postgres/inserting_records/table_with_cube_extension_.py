@@ -17,8 +17,8 @@ def connect():
     try:
         # connect to the PostgreSQL server
         print('\nConnecting to the PostgreSQL database...\n')
-        conn = psycopg2.connect(database = Credentials.database, user = Credentials.user, password = Credentials.password, 
-        host = '127.0.0.1')
+        conn = psycopg2.connect(database = Credentials.database, user = Credentials.user, 
+                                password = Credentials.password, host = '127.0.0.1')
 
         # create a cursor
         cur = conn.cursor()
@@ -36,7 +36,7 @@ def connect():
 
         x = y = list()
         
-        y = sample_floats(-2.00, 2.00, k = 100)
+        y = sample_floats(-2.00, 2.00, k = 128)
 
         dist_programatically = list()
         sorted_list = list()
@@ -65,7 +65,7 @@ def connect():
                 print('\nDeleted previous records from table\n')
 
         for i in tqdm(range(start, records + 1)):
-            x = sample_floats(-2.00, 2.00, k = 100)
+            x = sample_floats(-2.00, 2.00, k = 128)
             # Insert script
 
             query = "INSERT INTO project_with_cube (id, project_id, image_link, vector1) VALUES ({}, 1, {},\
